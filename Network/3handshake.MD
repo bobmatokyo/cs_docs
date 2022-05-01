@@ -1,0 +1,5 @@
+TCP如何解决乱序和丢包问题,描述一下三次握手
+TCP 数据包的头格式中有两个概念,Sequence Number是数据包的序号，用来解决网络包乱序（reordering）问题。Acknowledgement Number就是ACK——用于确认收到，用来解决不丢包的问题。   位码即tcp标志位，有6种标示：SYN(synchronous建立联机)  ACK(acknowledgement 确认) PSH(push传送) FIN(finish结束) RST(reset重置) URG(urgent紧急)Sequence number(顺序号码) Acknowledge number(确认号码).  SeqNum 的增加是和传输的字节数相关的, TCP 传输数据时,A主机第一次传输1440个字节,seq=1,那么第二次时seq = 1441,B拼接数据就是根据seq进行拼接的,seq数字不断累加避免了乱序.B主机收到第一次数据包以后会返回ack = 1441.   A主机收到B的ack = 1441时,就知道第一个数据包B已收到. 如果B没有收到第一次的数据包,那么B再收到A的数据包时,他就会发ack = 1回去,A收到B的回复,发现B没有收到第一次数据包,就会重发第一次数据包,这样就可以防止丢包.
+第一次握手：建立连接时，客户端发送 syn 包 (syn=j) 到服务器，并进入 SYN_SEND状 态，等待服务器确认；       
+第二次握手：服务器收到syn包，必须确认客户的SYN（ack=j+1），同时自己也发送一个SYN包（syn=k），即SYN+ACK包，此时服务器进入SYN_RECV状态；     
+第三次握手：客户端收到服务器的SYN＋ACK包，向服务器发送确包ACK(ack=k+1)，此包发送完毕，客户端和服务器进入ESTABLISHED状态，完成三次握手。完成三次握手，客户端与服务器开始传送数据.
